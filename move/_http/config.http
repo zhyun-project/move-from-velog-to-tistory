@@ -1,0 +1,9 @@
+### encrypt
+POST http://localhost:8888/encrypt
+
+
+
+### decrypt
+POST http://localhost:8888/decrypt
+
+

@@ -1,4 +1,4 @@
 rootProject.name = 'move'
 include 'velog'
-include 'tistory'
+include 'config'
 
