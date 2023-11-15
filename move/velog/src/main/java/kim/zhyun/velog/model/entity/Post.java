@@ -23,16 +23,17 @@ public class Post {
     private String postId;
     private String urlSlug;
     private String title;
+
+    @Column(columnDefinition = "LONGTEXT")
     private String originBody;
+    @Column(columnDefinition = "LONGTEXT")
     private String changedBody;
+
     private boolean isPrivate;
     private String releasedAt;
     private String updatedAt;
 
-    
-    // 시리즈 1:1
-    @OneToOne
-    private Series series;
+    private String seriesName;
 
     // photo 1:N
     @OneToMany
