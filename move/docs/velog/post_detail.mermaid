@@ -1,0 +1,21 @@
+sequenceDiagram
+    autonumber
+    loop 전체 글 상세 정보 velog.post에 저장
+        Local -->> +Velog: 글 상세 정보 요청
+        Velog -->> -Local: 글 상세 정보
+        Local -->> Local: 사진 파일 local 저장<br>사진 url -> 임시 텍스트(keyword) 치환
+        Local -->> DB: velog.photo 저장
+        rect rgb(111, 121, 151)
+            Note over Local , DB: << table photo >><br>photo_seq, post_seq, keyword<br>img_local_path, img_origin_path
+        end
+        Local -->> DB: velog.post 일부 field 저장
+        rect rgb(111, 121, 151)
+            Note over Local , DB: << table posts >><br>origin_body, changed_body<br>post_seq, post_id, released_at, updated_at, is_private,<br>series_id, series_name
+        end
+        Local -->> DB: velog.series 저장
+        rect rgb(111, 121, 151)
+            Note over Local , DB: << table series >><br>series_seq, series_name
+        end
+    end
+
+
