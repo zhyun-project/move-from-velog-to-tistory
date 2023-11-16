@@ -32,4 +32,8 @@ velog:
 
 imgs:
   dir: "/imgs/velog/"
-  keywordFormat: "변환변환변환변환%s-"
+  keywordFormat: "XChangeXChangeXChangeXChangeXChangeXChangeX%s-" # XChangeXChangeXChangeXChangeXChangeXChangeX
+  keywordPrefix: "XChangeXChangeXChangeXChangeXChangeXChangeX"
+
+github:
+  apiKey: "42bc1ab7c4f476d7414f4d09fa98490b6c12a46d7642f0d1516b5bda553dd27bb12ea9448d021d7f73a161b3158a5135e8bbc47fa3cf63b0036cfbce5039a23dbcd2eb8259b16bc3dafac9e01900af335e1795eeb757176f903690620df35fdf3b0686ce3731b4a666905788065d56e1b44e61a23dc315d444071bbbd44dfd4c"

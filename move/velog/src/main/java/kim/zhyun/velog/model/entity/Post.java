@@ -28,6 +28,8 @@ public class Post {
     private String originBody;
     @Column(columnDefinition = "LONGTEXT")
     private String changedBody;
+    @Column(columnDefinition = "LONGTEXT")
+    private String htmlBody;
 
     private boolean isPrivate;
     private String releasedAt;

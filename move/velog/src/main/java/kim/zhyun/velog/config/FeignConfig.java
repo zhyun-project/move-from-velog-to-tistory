@@ -21,8 +21,8 @@ public class FeignConfig {
     public RequestInterceptor requestInterceptor() {
         return requestTemplate -> {
             requestTemplate.header("Content-Type", "application/json");
-            requestTemplate.header("Accept", "application/json");
-            requestTemplate.header("cookie", cookie);
+//            requestTemplate.header("Accept", "application/json");
+//            requestTemplate.header("cookie", cookie);
         };
     }
 
