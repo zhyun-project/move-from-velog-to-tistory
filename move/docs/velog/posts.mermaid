@@ -1,7 +1,7 @@
 sequenceDiagram
     autonumber
     loop 전체 글 목록 velog.post에 저장
-        Local -->> +Velog: 글 목록 요청 (한번에 100건)
+        Local -->> +Velog: 글 목록 요청 (한번에 50건)
         Velog -->> -Local: 글 목록
         Local -->> DB: velog.tag 저장
         rect rgb(111, 121, 151)

@@ -10,11 +10,7 @@ sequenceDiagram
         end
         Local -->> DB: velog.post 일부 field 저장
         rect rgb(111, 121, 151)
-            Note over Local , DB: << table posts >><br>origin_body, changed_body<br>post_seq, post_id, released_at, updated_at, is_private,<br>series_id, series_name
-        end
-        Local -->> DB: velog.series 저장
-        rect rgb(111, 121, 151)
-            Note over Local , DB: << table series >><br>series_seq, series_name
+            Note over Local , DB: << table posts >><br>origin_body, changed_body<br>post_seq, post_id, is_private, series_name,<br> released_at, updated_at
         end
     end
 
