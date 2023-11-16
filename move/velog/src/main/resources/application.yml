@@ -13,13 +13,14 @@ spring:
         show_sql: true
 
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
 
 logging:
   level:
     kim.zhyun.velog.client: DEBUG
 
 velog:
+  username : "zhyun"
   operationName:
     series: "UserSeriesList"
     posts: "Posts"
@@ -28,3 +29,7 @@ velog:
     series: "query UserSeriesList($username: String!) {\n  user(username: $username) {\n    id\n    series_list {\n      id\n      name\n      description\n      url_slug\n      thumbnail\n      updated_at\n      posts_count\n      __typename\n    }\n    __typename\n  }\n}\n"
     posts: "query Posts($cursor: ID, $username: String, $temp_only: Boolean, $tag: String, $limit: Int) {\n  posts(cursor: $cursor, username: $username, temp_only: $temp_only, tag: $tag, limit: $limit) {\n    id\n    title\n    short_description\n    thumbnail\n    user {\n      id\n      username\n      profile {\n        id\n        thumbnail\n        __typename\n      }\n      __typename\n    }\n    url_slug\n    released_at\n    updated_at\n    comments_count\n    tags\n    is_private\n    likes\n    __typename\n  }\n}\n"
     read_post: "query ReadPost($username: String, $url_slug: String) {\n  post(username: $username, url_slug: $url_slug) {\n    id\n    title\n    released_at\n    updated_at\n    tags\n    body\n    short_description\n    is_markdown\n    is_private\n    is_temp\n    thumbnail\n    comments_count\n    url_slug\n    likes\n    liked\n    user {\n      id\n      username\n      profile {\n        id\n        display_name\n        thumbnail\n        short_bio\n        profile_links\n        __typename\n      }\n      velog_config {\n        title\n        __typename\n      }\n      __typename\n    }\n    comments {\n      id\n      user {\n        id\n        username\n        profile {\n          id\n          thumbnail\n          __typename\n        }\n        __typename\n      }\n      text\n      replies_count\n      level\n      created_at\n      level\n      deleted\n      __typename\n    }\n    series {\n      id\n      name\n      url_slug\n      series_posts {\n        id\n        post {\n          id\n          title\n          url_slug\n          user {\n            id\n            username\n            __typename\n          }\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    linked_posts {\n      previous {\n        id\n        title\n        url_slug\n        user {\n          id\n          username\n          __typename\n        }\n        __typename\n      }\n      next {\n        id\n        title\n        url_slug\n        user {\n          id\n          username\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n"
+
+imgs:
+  dir: "/imgs/velog/"
+  keywordFormat: "변환변환변환변환%s-"

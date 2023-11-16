@@ -4,6 +4,7 @@ import kim.zhyun.velog.data.vo.request.Request;
 import kim.zhyun.velog.data.vo.request.RequestPostDetail;
 import kim.zhyun.velog.data.vo.request.RequestPosts;
 import kim.zhyun.velog.data.vo.response.Response;
+import kim.zhyun.velog.data.vo.response.ResponsePostDetail;
 import kim.zhyun.velog.data.vo.response.ResponsePosts;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,6 @@ public interface VelogClient {
     Response<ResponsePosts> getPosts(@RequestBody Request<RequestPosts> req);
 
     @PostMapping
-    Response getPostDetail(@RequestBody Request<RequestPostDetail> req);
+    Response<ResponsePostDetail> getPostDetail(@RequestBody Request<RequestPostDetail> req);
 
 }

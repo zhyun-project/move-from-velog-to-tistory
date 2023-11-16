@@ -7,9 +7,9 @@ import lombok.ToString;
 @ToString
 @Getter
 @Builder
-public class RequestPost {
+public class RequestPostDetail {
 
     private String username;
-    private String urlSlug;
+    private String url_slug;
 
 }

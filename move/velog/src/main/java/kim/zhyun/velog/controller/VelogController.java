@@ -21,4 +21,10 @@ public class VelogController {
         return service.saveAllPosts();
     }
 
+    @GetMapping("/post-detail")
+    public List<Post> saveBody() {
+
+        return service.savePost();
+    }
+
 }

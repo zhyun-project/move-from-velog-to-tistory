@@ -16,6 +16,7 @@ public class Response<T> {
     @Getter @Setter
     public static class Data<T> {
         private List<T> posts;
+        private T post;
     }
 
 }

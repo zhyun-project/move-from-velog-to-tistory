@@ -8,6 +8,6 @@ public interface VelogService {
 
     List<Post> saveAllPosts();
 
-
+    List<Post> savePost();
 
 }
