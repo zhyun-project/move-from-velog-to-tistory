@@ -1,0 +1,12 @@
+sequenceDiagram
+    autonumber
+
+    api-tistory -->> +api-velog : <br><br>이미지 정보 요청
+    api-velog -->> -api-tistory : 이미지 정보 전달
+
+    api-tistory -->> +tistory-server : <br><br><br>이미지 업로드
+    tistory-server -->> -api-tistory : 이미지 치환 값 반환
+
+    api-tistory -->> +api-velog : <br><br><br>이미지 치환 값 전달
+    api-velog -->> -api-velog : 이미지 정보<br>post 데이터에 반영<br>
+

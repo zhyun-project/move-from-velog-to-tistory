@@ -1,0 +1,19 @@
+sequenceDiagram
+    autonumber
+    Note over tistory-server : 1일 15개 제한
+
+    api-tistory -->> +tistory-server : category 정보 요청
+    tistory-server -->> -api-tistory : category 데이터 전달
+
+    api-tistory -->> api-tistory : <br><br>티스토리 카테고리 정보<br>h2 db 저장<br>
+
+    api-tistory -->> +api-velog : post 데이터 요청
+    api-velog -->> -api-tistory : post 데이터 전달
+
+    api-tistory -->> api-tistory : <br><br>티스토리 카테고리와 일치 여부 확인 후<br>일치하면 카테고리 id 반영<br>
+
+loop 495 / 15 = 33일 🤖
+    api-tistory -->> +tistory-server : <br>post 업로드<br>
+end
+
+
