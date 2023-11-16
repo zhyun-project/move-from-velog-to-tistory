@@ -1,2 +1,6 @@
 ### posts
 GET localhost:9090/posts
+
+### postDetail
+GET localhost:9090/post-detail
+
