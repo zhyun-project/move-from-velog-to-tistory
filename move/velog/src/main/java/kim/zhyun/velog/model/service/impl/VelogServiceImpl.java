@@ -9,6 +9,7 @@ import kim.zhyun.velog.data.vo.request.RequestPostDetail;
 import kim.zhyun.velog.data.vo.request.RequestPosts;
 import kim.zhyun.velog.data.vo.response.Response;
 import kim.zhyun.velog.data.vo.response.ResponsePosts;
+import kim.zhyun.velog.data.vo.response.ResponsePostsToTistory;
 import kim.zhyun.velog.data.vo.response.SeriesVo;
 import kim.zhyun.velog.model.entity.Photo;
 import kim.zhyun.velog.model.repository.PhotoRepository;
@@ -98,6 +99,14 @@ public class VelogServiceImpl implements VelogService {
                 });
 
         return postRepository.findAll().size();
+    }
+
+    @Override
+    public List<ResponsePostsToTistory> findAllPost() {
+        return postRepository
+                .findAll().stream()
+                .map(PostsDto::from)
+                .toList();
     }
 
 
