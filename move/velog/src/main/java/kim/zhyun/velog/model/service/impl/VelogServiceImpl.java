@@ -11,7 +11,6 @@ import kim.zhyun.velog.data.vo.response.Response;
 import kim.zhyun.velog.data.vo.response.ResponsePosts;
 import kim.zhyun.velog.data.vo.response.SeriesVo;
 import kim.zhyun.velog.model.entity.Photo;
-import kim.zhyun.velog.model.entity.Post;
 import kim.zhyun.velog.model.repository.PhotoRepository;
 import kim.zhyun.velog.model.repository.PostRepository;
 import kim.zhyun.velog.model.service.VelogService;
@@ -39,12 +38,10 @@ public class VelogServiceImpl implements VelogService {
     private final FileUtils fileUtils;
 
     @Value("${velog.username}")     private String USERNAME;
-    @Value("${imgs.dir}")           private String dir;
     @Value("${imgs.keywordFormat}") private String keywordFormat;
-    @Value("${user.dir}")           private String imgPathRoot;
 
     @Override
-    public List<Post> saveAllPosts() {
+    public int saveAllPosts() {
         String cursor = null;
 
         while (true) {
@@ -63,12 +60,12 @@ public class VelogServiceImpl implements VelogService {
             cursor = responsePosts.get(responsePosts.size() - 1).getId();
         }
 
-        return postRepository.findAll();
+        return postRepository.findAll().size();
     }
 
     @Transactional
     @Override
-    public List<Post> savePost() {
+    public int savePost() {
         String sep = "![](http";
 
         postRepository.findAll()
@@ -76,6 +73,12 @@ public class VelogServiceImpl implements VelogService {
                     var responsePostDetail = client
                             .getPostDetail(getRequestPostDetail(dbPost.getUrlSlug()))
                             .getData().getPost();
+
+                    // 카테고리 있는경우 저장
+                    SeriesVo series = responsePostDetail.getSeries();
+                    if (series != null) {
+                        dbPost.setSeriesName(series.getName());
+                    }
 
                     String body = responsePostDetail.getBody();
                     // 혹시 모를 일을 대비해 원본 body는 미리 db에 저장
@@ -103,9 +106,7 @@ public class VelogServiceImpl implements VelogService {
                                     UUID.randomUUID().toString(),
                                     imgUrl.substring(imgUrl.lastIndexOf(".")));
 
-                            // 프로젝트-루트-디렉토리-절대경로/imgs/velog
-                            String path = imgPathRoot + dir;
-                            fileDownloadProcess(path, dir, imgUrl, filename); // path에 파일 생성
+                            fileDownloadProcess(imgUrl, filename); // path에 파일 생성
 
                             // 원본 body의 이미지 주소값이랑 치환 할 키워드 생성
                             String replaceKeyword = String.format(keywordFormat, UUID.randomUUID().toString());
@@ -114,30 +115,25 @@ public class VelogServiceImpl implements VelogService {
                             // 사진 정보 db 저장 
                             photoRepository.save(Photo.builder()
                                             .keyword(replaceKeyword)
-                                            .imgLocalPath(path + filename)
+                                            .imgLocalPath(fileUtils.getPath() + filename)
                                             .imgOriginPath(imgUrl)
                                     .build());
                         }
+
                         // 이미지 주소값이랑 치환 된 body를 post 테이블에 저장
                         dbPost.setChangedBody(changeBody);
                     }
-
-                    // 카테고리 있는경우 저장
-                    SeriesVo series = responsePostDetail.getSeries();
-                    if (series != null) {
-                        dbPost.setSeriesName(series.getName());
-                    }
                 });
 
-        return postRepository.findAll();
+        return postRepository.findAll().size();
     }
 
     // 실제 파일 다운로드
-    private void fileDownloadProcess(String path, String dir, String imgUrl, String filename) {
+    private void fileDownloadProcess(String imgUrl, String filename) {
         try {
             byte[] image = fileUtils.patchImage(imgUrl);
-            fileUtils.makeDirectory(imgPathRoot, dir);
-            fileUtils.download(path, filename, image);
+            fileUtils.makeDirectory();
+            fileUtils.download(filename, image);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
