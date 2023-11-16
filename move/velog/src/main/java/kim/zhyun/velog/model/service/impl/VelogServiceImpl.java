@@ -16,7 +16,6 @@ import kim.zhyun.velog.model.repository.PostRepository;
 import kim.zhyun.velog.model.service.VelogService;
 import kim.zhyun.velog.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +24,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-@Slf4j
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class VelogServiceImpl implements VelogService {
     private final VelogClient client;
@@ -63,10 +62,8 @@ public class VelogServiceImpl implements VelogService {
         return postRepository.findAll().size();
     }
 
-    @Transactional
     @Override
     public int savePost() {
-        String sep = "![](http";
 
         postRepository.findAll()
                 .forEach(dbPost -> {
@@ -81,51 +78,58 @@ public class VelogServiceImpl implements VelogService {
                     }
 
                     String body = responsePostDetail.getBody();
-                    // 혹시 모를 일을 대비해 원본 body는 미리 db에 저장
-                    dbPost.setOriginBody(body);
 
-                    // 원래 있던 이미지 url을 대체 키워드로 치환할 원본 body(본문) 카피
-                    String changeBody = body;
+                    // 원본 body -> db 저장
+                    dbPost.setOriginBody(body);
 
                     // 파일 변환 작업
                     // ![](https://velog.velcdn.com/images/zhyun/post/64797348-5c69-4d69-854c-8a6ec0beb20e/image.png)\n\n<br>
+                    String sep = "![](http";
                     if (body.contains(sep)) {
                         String[] arr = body
                                 .substring(body.indexOf(sep) + sep.length())
                                 .split("!\\[]\\(http");
 
-                        for (String source: arr) {
-                            // https://cloudflare.com/asdh/sdf/images.png
-                            String imgUrl = String.format(
-                                    "http%s",
-                                    source.substring(0, source.indexOf(")")));
+                        String changed = changeOriginImgToLocalImg(body, arr);
 
-                            // filname.png
-                            String filename = String.format(
-                                    "%s%s",
-                                    UUID.randomUUID().toString(),
-                                    imgUrl.substring(imgUrl.lastIndexOf(".")));
-
-                            fileDownloadProcess(imgUrl, filename); // path에 파일 생성
-
-                            // 원본 body의 이미지 주소값이랑 치환 할 키워드 생성
-                            String replaceKeyword = String.format(keywordFormat, UUID.randomUUID().toString());
-                            changeBody = changeBody.replace(imgUrl, replaceKeyword);
-
-                            // 사진 정보 db 저장 
-                            photoRepository.save(Photo.builder()
-                                            .keyword(replaceKeyword)
-                                            .imgLocalPath(fileUtils.getPath() + filename)
-                                            .imgOriginPath(imgUrl)
-                                    .build());
-                        }
-
-                        // 이미지 주소값이랑 치환 된 body를 post 테이블에 저장
-                        dbPost.setChangedBody(changeBody);
+                        // 이미지 주소값을 keyword로 치환 한 body -> db 저장
+                        dbPost.setChangedBody(changed);
                     }
                 });
 
         return postRepository.findAll().size();
+    }
+
+
+    private String changeOriginImgToLocalImg(String changeBody, String[] arr) {
+
+        for (String source: arr) {
+
+            String imgUrl = String.format("http%s", // https://cloudflare.com/asdh/sdf/images.png
+                    source.substring(0, source.indexOf(")")));
+
+            String filename = String.format("%s%s", // UUID-FORMAT-FILENAME.png
+                    UUID.randomUUID().toString(),
+                    imgUrl.substring(imgUrl.lastIndexOf(".")));
+
+            fileDownloadProcess(imgUrl, filename); // local path에 파일 생성
+
+            // 원본 body의 이미지 주소값에 치환 할 키워드 생성
+            String replaceKeyword = String.format(keywordFormat, UUID.randomUUID().toString());
+            changeBody = changeBody.replace(imgUrl, replaceKeyword);
+
+            savePhotoInfo(imgUrl, filename, replaceKeyword);
+        }
+
+        return changeBody;
+    }
+
+    private void savePhotoInfo(String imgUrl, String filename, String replaceKeyword) {
+        photoRepository.save(Photo.builder()
+                .keyword(replaceKeyword)
+                .imgLocalPath(fileUtils.getPath() + filename)
+                .imgOriginPath(imgUrl)
+                .build());
     }
 
     // 실제 파일 다운로드
