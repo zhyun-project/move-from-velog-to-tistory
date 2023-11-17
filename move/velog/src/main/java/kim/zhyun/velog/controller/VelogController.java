@@ -1,6 +1,6 @@
 package kim.zhyun.velog.controller;
 
-import kim.zhyun.velog.data.dto.PostsDto;
+import kim.zhyun.velog.data.vo.response.ResponsePhotoToTistory;
 import kim.zhyun.velog.data.vo.response.ResponsePostsToTistory;
 import kim.zhyun.velog.model.service.VelogService;
 import kim.zhyun.velog.model.service.impl.GithubApiServiceImpl;
@@ -38,7 +38,13 @@ public class VelogController {
     @GetMapping("/find-all-posts")
     public List<ResponsePostsToTistory> findAllPost() {
 
-        return service.findAll();
+        return service.findAllPost();
+    }
+
+    @GetMapping("/find-all-photo")
+    public List<ResponsePhotoToTistory> findAllPhoto() {
+
+        return service.findAllPhoto();
     }
 
 }

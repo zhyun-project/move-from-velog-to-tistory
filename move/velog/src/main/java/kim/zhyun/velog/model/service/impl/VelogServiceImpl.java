@@ -1,16 +1,14 @@
 package kim.zhyun.velog.model.service.impl;
 
 import kim.zhyun.velog.client.VelogClient;
+import kim.zhyun.velog.data.dto.PhotoDto;
 import kim.zhyun.velog.data.dto.PostsDto;
 import kim.zhyun.velog.data.vo.OperationName;
 import kim.zhyun.velog.data.vo.Query;
 import kim.zhyun.velog.data.vo.request.Request;
 import kim.zhyun.velog.data.vo.request.RequestPostDetail;
 import kim.zhyun.velog.data.vo.request.RequestPosts;
-import kim.zhyun.velog.data.vo.response.Response;
-import kim.zhyun.velog.data.vo.response.ResponsePosts;
-import kim.zhyun.velog.data.vo.response.ResponsePostsToTistory;
-import kim.zhyun.velog.data.vo.response.SeriesVo;
+import kim.zhyun.velog.data.vo.response.*;
 import kim.zhyun.velog.model.entity.Photo;
 import kim.zhyun.velog.model.repository.PhotoRepository;
 import kim.zhyun.velog.model.repository.PostRepository;
@@ -103,9 +101,19 @@ public class VelogServiceImpl implements VelogService {
 
     @Override
     public List<ResponsePostsToTistory> findAllPost() {
+
         return postRepository
                 .findAll().stream()
                 .map(PostsDto::from)
+                .toList();
+    }
+
+    @Override
+    public List<ResponsePhotoToTistory> findAllPhoto() {
+
+        return photoRepository
+                .findAll().stream()
+                .map(PhotoDto::from)
                 .toList();
     }
 
