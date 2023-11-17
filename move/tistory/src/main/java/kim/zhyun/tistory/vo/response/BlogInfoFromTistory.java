@@ -7,6 +7,6 @@ import lombok.Setter;
 public class BlogInfoFromTistory {
 
     private String status;
-    private String item;
+    private UserInfo item;
 
 }
