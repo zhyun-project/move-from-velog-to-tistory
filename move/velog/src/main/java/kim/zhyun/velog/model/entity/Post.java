@@ -37,8 +37,9 @@ public class Post {
 
     private String seriesName;
 
-    // photo 1:N
+    // post 1:N photo
     @OneToMany
+    @JoinColumn(name = "post_seq")
     @Builder.Default
     private List<Photo> photos = new ArrayList<>();
 

@@ -36,6 +36,10 @@ public class PostsDto {
                         .map(Tag::getTag)
                         .collect(Collectors.joining(",")))
                 .series(post.getSeriesName())
+                .photos(post.getPhotos()
+                        .stream()
+                        .map(PhotoDto::from)
+                        .toList())
 
                 .releasedAt(post.getReleasedAt())
                 .build();

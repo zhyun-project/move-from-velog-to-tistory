@@ -1,9 +1,7 @@
 package kim.zhyun.velog.model.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -23,6 +21,8 @@ public class Photo {
     private String keyword;
     private String imgOriginPath;
     private String imgLocalPath;
+
+    @Column(name = "post_seq")
     private long postSeq;
 
 }
