@@ -16,6 +16,7 @@ import java.util.List;
 @RestController
 public class VelogController {
     private final VelogService service;
+    private final GithubApiService gitService;
     private final GithubApiServiceImpl gitService;
 
     @GetMapping("/posts")
