@@ -12,5 +12,6 @@ public class ResponsePhotoToTistory {
     private String keyword;
     private String imgOriginPath;
     private String imgLocalPath;
+    private Long postSeq;
 
 }
