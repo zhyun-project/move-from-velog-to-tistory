@@ -1,6 +1,21 @@
 server:
   port: 8080
 
+spring:
+  datasource:
+    url: jdbc:h2:./_h2/tistory;AUTO_SERVER=TRUE;mode=MYSQL;
+    username: sa
+
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        highlight_sql: true
+
+    hibernate:
+      ddl-auto: create
+
 logging:
   level:
     kim.zhyun.tistory.client: DEBUG

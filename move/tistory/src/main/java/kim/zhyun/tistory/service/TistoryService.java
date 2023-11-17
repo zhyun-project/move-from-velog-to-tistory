@@ -1,16 +1,18 @@
 package kim.zhyun.tistory.service;
 
+import kim.zhyun.tistory.vo.CategoryVo;
+import kim.zhyun.tistory.vo.Response;
 import kim.zhyun.tistory.vo.response.BlogInfoFromTistory;
-import kim.zhyun.tistory.vo.response.CategoryFromTistory;
 import kim.zhyun.tistory.vo.response.PhotoFromTistory;
 import kim.zhyun.tistory.vo.response.PostFromTistory;
-import kim.zhyun.tistory.vo.Response;
+
+import java.util.Map;
 
 public interface TistoryService {
 
     Response<BlogInfoFromTistory> blogInfo();
     Response<PostFromTistory> postUpload();
     Response<PhotoFromTistory> fileUpload();
-    Response<CategoryFromTistory> getCategory();
+    Map<String, CategoryVo> getCategory();
 
 }
