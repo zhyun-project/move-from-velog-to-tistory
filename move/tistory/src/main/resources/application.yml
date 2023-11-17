@@ -6,3 +6,8 @@ logging:
     kim.zhyun.tistory.client: DEBUG
 
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
