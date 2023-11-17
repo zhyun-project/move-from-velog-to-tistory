@@ -20,9 +20,9 @@ import java.io.File;
 public class TistoryServiceImpl implements TistoryService {
     private final TistoryClient tistoryClient;
 
-    @Value("${tistory.accessToken}") private String accessToken;
-    @Value("${tistory.blogName}") private String blogName;
-    @Value("${tistory.output}") private String output;
+    @Value("${tistory.accessToken}")    private String accessToken;
+    @Value("${tistory.blogName}")       private String blogName;
+    @Value("${tistory.output}")         private String output;
 
     @Override
     public Response<BlogInfoFromTistory> blogInfo() {
@@ -33,7 +33,7 @@ public class TistoryServiceImpl implements TistoryService {
     public Response<PostFromTistory> postUpload() {
         // TODO: 기능 구현 해야 됨 
         Response<PostFromTistory> response = tistoryClient.postUpload(accessToken,
-                "",
+                blogName,
                 "",
                 "",
                 3,
