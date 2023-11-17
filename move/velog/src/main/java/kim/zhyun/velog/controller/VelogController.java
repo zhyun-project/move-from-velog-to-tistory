@@ -2,8 +2,9 @@ package kim.zhyun.velog.controller;
 
 import kim.zhyun.velog.data.vo.response.ResponsePhotoToTistory;
 import kim.zhyun.velog.data.vo.response.ResponsePostsToTistory;
+import kim.zhyun.velog.model.service.GithubApiService;
 import kim.zhyun.velog.model.service.VelogService;
-import kim.zhyun.velog.model.service.impl.GithubApiServiceImpl;
+import kim.zhyun.velog.model.service.impl.UpdatePhotoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ import java.util.List;
 public class VelogController {
     private final VelogService service;
     private final GithubApiService gitService;
-    private final GithubApiServiceImpl gitService;
+    private final UpdatePhotoService photoUpdateService;
 
     @GetMapping("/posts")
     public String posts() {
@@ -46,6 +47,12 @@ public class VelogController {
     public List<ResponsePhotoToTistory> findAllPhoto() {
 
         return service.findAllPhoto();
+    }
+
+    @GetMapping("/update-photo-post-seq")
+    public void asd() {
+        var mapPhotoKeywordPostSeq = photoUpdateService.mapPhotoKeywordPostSeq();
+        photoUpdateService.updatePhoto(mapPhotoKeywordPostSeq);
     }
 
 }

@@ -23,5 +23,6 @@ public class Photo {
     private String keyword;
     private String imgOriginPath;
     private String imgLocalPath;
+    private long postSeq;
 
 }

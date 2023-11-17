@@ -4,3 +4,5 @@ GET localhost:9090/posts
 ### postDetail
 GET localhost:9090/post-detail
 
+### photo table update post seq
+GET localhost:9090/update-photo-post-seq
