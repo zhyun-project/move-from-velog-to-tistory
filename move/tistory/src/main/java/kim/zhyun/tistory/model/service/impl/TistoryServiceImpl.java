@@ -14,16 +14,24 @@ import kim.zhyun.tistory.model.repository.PostRepository;
 import kim.zhyun.tistory.model.service.TistoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import java.io.File;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
 @RefreshScope
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class TistoryServiceImpl implements TistoryService {
@@ -61,7 +69,23 @@ public class TistoryServiceImpl implements TistoryService {
 
     @Override
     public Response<PhotoFromTistory> fileUpload() {
-        // TODO: 기능 구현 해야 됨 > 파일 업로드 후 H2 저장
+        postRepository.findAll()
+                .forEach(post -> {
+                    String nowPostBlogName = post.getBlogName();
+                    String accesstoken = nowPostBlogName.equals(blogNameDev)
+                            ? accessTokenDev
+                            : accessTokenLife;
+
+                    post.getPhotos().forEach(photo -> {
+                        Response<PhotoFromTistory> response = null;
+                        try {
+                            response = clientMappedFile(accesstoken, nowPostBlogName, photo.getImgLocalPath());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        photo.setReplacer(response.getTistory().getReplacer());
+                    });
+                });
 
         return null;
     }
@@ -108,11 +132,20 @@ public class TistoryServiceImpl implements TistoryService {
 
     private Response<PhotoFromTistory> clientMappedFile(String accessToken,
                                                         String blogName,
-                                                        String pathname) {
+                                                        String pathname) throws IOException {
+        File file = new File(pathname);
+        FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
 
-        return tistoryClient.fileUpload("multipart/form-data",
-                accessToken, blogName,
-                new File(pathname));
+        try {
+            InputStream input = new FileInputStream(file);
+            OutputStream os = fileItem.getOutputStream();
+            IOUtils.copy(input, os);
+        } catch (IOException ex) {
+            log.info(ex.getMessage());
+        }
+
+        MultipartFile mFile = new CommonsMultipartFile(fileItem);
+        return tistoryClient.fileUpload(accessToken, output, blogName, mFile);
     }
 
     private void categorySaveH2DB(String accessToken, String blogName) {

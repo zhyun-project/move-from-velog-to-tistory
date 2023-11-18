@@ -29,6 +29,11 @@ public class TistoryController {
         return tistoryService.getCategory();
     }
 
+    @GetMapping("/file-upload")
+    public void fileUpload() {
+        tistoryService.fileUpload();
+    }
+
     @GetMapping("/post-upload")
     public Response<PostFromTistory> postUpload() {
 

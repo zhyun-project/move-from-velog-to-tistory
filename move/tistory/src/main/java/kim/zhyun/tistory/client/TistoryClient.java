@@ -1,16 +1,20 @@
 package kim.zhyun.tistory.client;
 
+import kim.zhyun.tistory.config.FeignConfig;
 import kim.zhyun.tistory.data.vo.Response;
 import kim.zhyun.tistory.data.vo.response.BlogInfoFromTistory;
 import kim.zhyun.tistory.data.vo.response.CategoryFromTistory;
 import kim.zhyun.tistory.data.vo.response.PhotoFromTistory;
 import kim.zhyun.tistory.data.vo.response.PostFromTistory;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-
-@FeignClient(name = "tistoryClient", url = "https://www.tistory.com/apis")
+@FeignClient(name = "tistoryClient", url = "https://www.tistory.com/apis", configuration = FeignConfig.class)
 public interface TistoryClient {
 
     @GetMapping("/blog/info")
@@ -29,11 +33,11 @@ public interface TistoryClient {
                                          @RequestParam String tag,         //  태그 (',' 로 구분)
                                          @RequestParam int acceptComment); //  댓글 허용 (0, 1 - 기본값)
 
-    @PostMapping("/post/attach")
-    Response<PhotoFromTistory> fileUpload(@RequestHeader(name = "Content-Type") String ContentType,
-                                          @RequestParam String access_token,
+    @PostMapping(value = "/post/attach", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = "application/json")
+    Response<PhotoFromTistory> fileUpload(@RequestParam String access_token,
+                                          @RequestParam String output,
                                           @RequestParam String blogName,
-                                          @RequestBody File uploadedfile);
+                                          @RequestPart MultipartFile uploadedfile);
 
     @GetMapping("/category/list")
     Response<CategoryFromTistory> getCategory(@RequestParam String access_token,
