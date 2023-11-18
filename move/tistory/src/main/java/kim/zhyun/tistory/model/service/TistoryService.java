@@ -12,7 +12,7 @@ public interface TistoryService {
 
     Response<BlogInfoFromTistory> blogInfo();
     Response<PostFromTistory> postUpload();
-    Response<PhotoFromTistory> fileUpload();
+    void fileUpload();
     Map<String, CategoryVo> getCategory();
 
 }

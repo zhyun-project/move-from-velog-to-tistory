@@ -1,5 +1,6 @@
 package kim.zhyun.tistory.model.service.impl;
 
+import feign.FeignException;
 import kim.zhyun.tistory.client.TistoryClient;
 import kim.zhyun.tistory.data.vo.CategoryVo;
 import kim.zhyun.tistory.data.vo.Response;
@@ -31,8 +32,8 @@ import java.util.Map;
 
 @Slf4j
 @RefreshScope
-@Transactional
 @RequiredArgsConstructor
+@Transactional(noRollbackFor = { FeignException.BadRequest.class })
 @Service
 public class TistoryServiceImpl implements TistoryService {
     private final TistoryClient tistoryClient;
@@ -68,28 +69,33 @@ public class TistoryServiceImpl implements TistoryService {
     }
 
     @Override
-    public Response<PhotoFromTistory> fileUpload() {
-        postRepository.findAll()
+    public void fileUpload() {
+        postRepository.findAll().stream()
+                .filter(post -> post.getPhotos().size() > 0)
                 .forEach(post -> {
                     String nowPostBlogName = post.getBlogName();
                     String accesstoken = nowPostBlogName.equals(blogNameDev)
                             ? accessTokenDev
                             : accessTokenLife;
 
-                    post.getPhotos().forEach(photo -> {
-                        Response<PhotoFromTistory> response = null;
-                        try {
-                            response = clientMappedFile(accesstoken, nowPostBlogName, photo.getImgLocalPath());
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                        photo.setReplacer(response.getTistory().getReplacer());
-                    });
-                });
+                    post.getPhotos().stream()
+                            .filter(photo -> photo.getReplacer() == null)
+                            .forEach(photo -> {
+                                Response<PhotoFromTistory> response = null;
+                                try {
+                                    response = clientMappedFile(accesstoken, nowPostBlogName, photo.getImgLocalPath());
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                photo.setReplacer(response.getTistory().getReplacer());
 
-        return null;
+                                // 파일 전송시 갯수 짤리는 순간을 예측하기 어려워서 건별로 저장
+                                photoRepository.saveAndFlush(photo);
+                            });
+                });
     }
 
+    @Override
     public Response<PostFromTistory> postUpload() {
 
         String replacer;
