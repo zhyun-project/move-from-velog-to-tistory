@@ -16,6 +16,8 @@ public class Post {
     @Id
     private Long seq;
 
+    private boolean uploadYn;
+
     private String slogan;
     private String title;
 

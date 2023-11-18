@@ -23,6 +23,7 @@ public interface TistoryClient {
 
     @PostMapping("/post/write")
     Response<PostFromTistory> postUpload(@RequestParam String access_token,
+                                         @RequestParam String output,
                                          @RequestParam String blogName,    //  Blog Name (필수)
                                          @RequestParam String title,       //  글 제목 (필수)
                                          @RequestParam String content,     //  글 내용

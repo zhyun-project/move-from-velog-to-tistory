@@ -11,7 +11,7 @@ import java.util.Map;
 public interface TistoryService {
 
     Response<BlogInfoFromTistory> blogInfo();
-    Response<PostFromTistory> postUpload();
+    void postUpload();
     void fileUpload();
     Map<String, CategoryVo> getCategory();
 

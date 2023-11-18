@@ -35,9 +35,8 @@ public class TistoryController {
     }
 
     @GetMapping("/post-upload")
-    public Response<PostFromTistory> postUpload() {
-
-        return tistoryService.postUpload();
+    public void postUpload() {
+        tistoryService.postUpload();
     }
 
 }

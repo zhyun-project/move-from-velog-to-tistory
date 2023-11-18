@@ -2,6 +2,7 @@ package kim.zhyun.tistory.model.service.impl;
 
 import feign.FeignException;
 import kim.zhyun.tistory.client.TistoryClient;
+import kim.zhyun.tistory.data.dto.PostDto;
 import kim.zhyun.tistory.data.vo.CategoryVo;
 import kim.zhyun.tistory.data.vo.Response;
 import kim.zhyun.tistory.data.vo.TistoryConnectVo;
@@ -19,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +30,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @RefreshScope
@@ -42,6 +43,7 @@ public class TistoryServiceImpl implements TistoryService {
     private final PostRepository postRepository;
     private final PhotoRepository photoRepository;
     private final CategoryRepository categoryRepository;
+
     private final TistoryConnectVo tistoryConnect;
 
     @Override
@@ -89,22 +91,26 @@ public class TistoryServiceImpl implements TistoryService {
     }
 
     @Override
-    public Response<PostFromTistory> postUpload() {
+    public void postUpload() {
+        AtomicInteger cnt = new AtomicInteger();
+        postRepository.findAll()
+                .stream()
+                .filter(post -> !post.isUploadYn())
+                .filter(post -> post.getReplacerContent() != null)
+                .limit(15)
+                .forEach(post -> {
+                    String accessToken = post.getBlogName().equals(tistoryConnect.getBlogNameDev())
+                            ? tistoryConnect.getAccessTokenDev()
+                            : tistoryConnect.getAccessTokenLife();
 
-        // TODO: 기능 구현 해야 됨
-        RequestPostWrite requestPostWrite = RequestPostWrite.builder()
-                .access_token("")
-                .blogName("")
-                .title("")
-                .content("")
-                .category("")
-                .slogan("") // url-slug
-                .tag("").build();
+                    var response = clientMappedPostDto(PostDto.from(post, accessToken));
 
-        Response<PostFromTistory> response = clientMappedPostDto(requestPostWrite);
+                    log.info("Post Url = {}", response.getTistory().getUrl());
+                    post.setUploadYn(true);
+                    cnt.getAndIncrement();
+                });
 
-        log.info("Post Url = {}", response.getTistory().getUrl());
-        return response;
+        log.info("{}개의 Post가 업로드 되었습니다.", cnt);
     }
 
 
@@ -113,6 +119,7 @@ public class TistoryServiceImpl implements TistoryService {
 
         return tistoryClient.postUpload(
                 requestPostWrite.getAccess_token(),
+                tistoryConnect.getOutput(),
                 requestPostWrite.getBlogName(),
 
                 requestPostWrite.getTitle(),
