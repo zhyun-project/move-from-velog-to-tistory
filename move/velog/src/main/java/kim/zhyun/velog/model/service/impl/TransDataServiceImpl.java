@@ -2,6 +2,7 @@ package kim.zhyun.velog.model.service.impl;
 
 import kim.zhyun.velog.model.repository.PhotoRepository;
 import kim.zhyun.velog.model.repository.PostRepository;
+import kim.zhyun.velog.model.service.TransDataService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,15 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-/*
- *  photo table에 post seq 추가 😭
- */
-
 @Slf4j
 @Transactional
 @RequiredArgsConstructor
 @Service
-public class UpdatePhotoService {
+public class TransDataServiceImpl implements TransDataService {
     private final PostRepository postRepository;
     private final PhotoRepository photoRepository;
 

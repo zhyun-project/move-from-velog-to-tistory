@@ -16,12 +16,18 @@ import java.util.List;
 public class TistoryController {
     private final VelogService service;
 
+    /**
+     * `tistory module`에서 사용 할 post 전체 데이터 조회
+     */
     @GetMapping("/find-all-posts")
     public List<ResponsePostsToTistory> findAllPost() {
 
         return service.findAllPost();
     }
 
+    /**
+     * `tistory module`에서 사용 할 photo 전체 데이터 조회
+     */
     @GetMapping("/find-all-photo")
     public List<ResponsePhotoToTistory> findAllPhoto() {
 
