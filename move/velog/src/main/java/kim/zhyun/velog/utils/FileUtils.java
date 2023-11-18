@@ -56,13 +56,4 @@ public class FileUtils {
         }
     }
 
-    // 로컬에서 파일 불러오기
-    public File readFile(String name) throws FileNotFoundException {
-        File file = new File(path, name);
-
-        if (!file.exists())
-            throw new FileNotFoundException();
-
-        return file;
-    }
 }

@@ -3,7 +3,6 @@ package kim.zhyun.tistory.controller;
 import kim.zhyun.tistory.data.vo.CategoryVo;
 import kim.zhyun.tistory.data.vo.Response;
 import kim.zhyun.tistory.data.vo.response.BlogInfoFromTistory;
-import kim.zhyun.tistory.data.vo.response.PostFromTistory;
 import kim.zhyun.tistory.model.service.TistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -21,8 +21,7 @@ public class FeignConfig {
     public RequestInterceptor requestInterceptor() {
         return requestTemplate -> {
             requestTemplate.header("Content-Type", "application/json");
-//            requestTemplate.header("Accept", "application/json");
-//            requestTemplate.header("cookie", cookie);
+//            requestTemplate.header("cookie", cookie); // 비공개글 포함한 post 데이터 조회시 필요
         };
     }
 
