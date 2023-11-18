@@ -1,6 +1,5 @@
 package kim.zhyun.velog.data.vo.response;
 
-import kim.zhyun.velog.data.dto.PhotoDto;
 import lombok.*;
 
 import java.util.List;
@@ -11,6 +10,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponsePostsToTistory {
+
+    private Long seq;
 
     private String title;
     private String body;

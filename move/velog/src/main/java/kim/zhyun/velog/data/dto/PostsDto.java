@@ -27,6 +27,8 @@ public class PostsDto {
 
     public static ResponsePostsToTistory from (Post post) {
         return ResponsePostsToTistory.builder()
+                .seq(post.getSeq())
+
                 .title(post.getTitle())
                 .body(post.getHtmlBody())
                 .urlSlug(post.getUrlSlug())

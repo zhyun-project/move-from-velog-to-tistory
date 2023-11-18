@@ -7,9 +7,11 @@ public class PhotoDto {
 
     public static ResponsePhotoToTistory from (Photo photo) {
         return ResponsePhotoToTistory.builder()
+                .seq(photo.getSeq())
                 .keyword(photo.getKeyword())
                 .imgLocalPath(photo.getImgLocalPath())
                 .imgOriginPath(photo.getImgOriginPath())
+                .postSeq(photo.getPostSeq())
                 .build();
     }
 }
