@@ -1,10 +1,15 @@
 package kim.zhyun.velog.model.entity;
 
 
-import jakarta.persistence.*;
 import lombok.*;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import static javax.persistence.GenerationType.IDENTITY;
+
 
 @ToString
 @Builder
@@ -14,8 +19,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 public class Photo {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @Id @GeneratedValue(strategy = IDENTITY)
     private long seq;
 
     private String keyword;

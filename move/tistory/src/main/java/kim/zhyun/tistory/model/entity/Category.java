@@ -1,8 +1,9 @@
 package kim.zhyun.tistory.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.*;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Builder
 @Getter @Setter

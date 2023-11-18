@@ -164,11 +164,11 @@ public class VelogServiceImpl implements VelogService {
     private Request<RequestPostDetail> getRequestPostDetail(String urlSlug) {
 
         return Request.<RequestPostDetail>builder()
-                .operationName(operationName.post())
+                .operationName(operationName.getPosts())
                 .variables(RequestPostDetail.builder()
                         .username(USERNAME)
                         .url_slug(urlSlug).build())
-                .query(query.post()).build();
+                .query(query.getPosts()).build();
     }
 
 
@@ -176,12 +176,12 @@ public class VelogServiceImpl implements VelogService {
     private Request<RequestPosts> getRequestPosts(String cursor) {
 
         return Request.<RequestPosts>builder()
-                .operationName(operationName.posts())
+                .operationName(operationName.getPosts())
                 .variables(RequestPosts.builder()
                         .username(USERNAME)
                         .cursor(cursor)
                         .limit(100).build())
-                .query(query.posts()).build();
+                .query(query.getPosts()).build();
     }
 
 }
