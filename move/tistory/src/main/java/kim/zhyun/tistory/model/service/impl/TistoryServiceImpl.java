@@ -27,6 +27,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,8 +51,6 @@ public class TistoryServiceImpl implements TistoryService {
 
     @Value("${tistory.output}")             private String output;
 
-    private Map<String, CategoryVo> blogCategory;
-
 
     @Override
     public Response<BlogInfoFromTistory> blogInfo() {
@@ -65,7 +64,7 @@ public class TistoryServiceImpl implements TistoryService {
         categorySaveH2DB(accessTokenDev, blogNameDev);
         categorySaveH2DB(accessTokenLife, blogNameLife);
 
-        return blogCategory = getCategoryMap();
+        return getCategoryMap();
     }
 
     @Override
@@ -97,10 +96,6 @@ public class TistoryServiceImpl implements TistoryService {
 
     @Override
     public Response<PostFromTistory> postUpload() {
-
-        String replacer;
-
-        // series
 
         // TODO: 기능 구현 해야 됨
         RequestPostWrite requestPostWrite = RequestPostWrite.builder()
@@ -164,18 +159,16 @@ public class TistoryServiceImpl implements TistoryService {
     }
 
     private Map<String, CategoryVo> getCategoryMap() {
-        if (blogCategory == null) {
-            blogCategory = new HashMap<>();
+        Map<String, CategoryVo> blogCategory = new HashMap<>();
 
-            categoryRepository.findAll()
-                    .forEach(category -> {
-                        String blogName = category.getBlogName().equals(blogNameDev)
-                                ? blogNameDev
-                                : blogNameLife;
+        categoryRepository.findAll()
+                .forEach(category -> {
+                    String blogName = category.getBlogName().equals(blogNameDev)
+                            ? blogNameDev
+                            : blogNameLife;
 
-                        blogCategory.put(category.getCategoryName(), CategoryVo.of(blogName, category.getCategoryId()));
-                    });
-        }
+                    blogCategory.put(category.getCategoryName(), CategoryVo.of(blogName, category.getCategoryId()));
+                });
 
         return blogCategory;
     }
