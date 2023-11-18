@@ -4,6 +4,7 @@ import feign.FeignException;
 import kim.zhyun.tistory.client.TistoryClient;
 import kim.zhyun.tistory.data.vo.CategoryVo;
 import kim.zhyun.tistory.data.vo.Response;
+import kim.zhyun.tistory.data.vo.TistoryConnectVo;
 import kim.zhyun.tistory.data.vo.request.RequestPostWrite;
 import kim.zhyun.tistory.data.vo.response.BlogInfoFromTistory;
 import kim.zhyun.tistory.data.vo.response.PhotoFromTistory;
@@ -27,7 +28,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,27 +42,21 @@ public class TistoryServiceImpl implements TistoryService {
     private final PostRepository postRepository;
     private final PhotoRepository photoRepository;
     private final CategoryRepository categoryRepository;
-
-    @Value("${tistory.dev.accessToken}")    private String accessTokenDev;
-    @Value("${tistory.dev.blogName}")       private String blogNameDev;
-
-    @Value("${tistory.life.accessToken}")   private String accessTokenLife;
-    @Value("${tistory.life.blogName}")      private String blogNameLife;
-
-    @Value("${tistory.output}")             private String output;
-
+    private final TistoryConnectVo tistoryConnect;
 
     @Override
     public Response<BlogInfoFromTistory> blogInfo() {
 
-        return tistoryClient.blogInfo(accessTokenDev, output);
+        return tistoryClient.blogInfo(
+                tistoryConnect.getAccessTokenDev(),
+                tistoryConnect.getOutput());
     }
 
     @Override
     public Map<String, CategoryVo> getCategory() {
 
-        categorySaveH2DB(accessTokenDev, blogNameDev);
-        categorySaveH2DB(accessTokenLife, blogNameLife);
+        categorySaveH2DB(tistoryConnect.getAccessTokenDev(), tistoryConnect.getBlogNameDev());
+        categorySaveH2DB(tistoryConnect.getAccessTokenLife(), tistoryConnect.getBlogNameLife());
 
         return getCategoryMap();
     }
@@ -73,9 +67,9 @@ public class TistoryServiceImpl implements TistoryService {
                 .filter(post -> post.getPhotos().size() > 0)
                 .forEach(post -> {
                     String nowPostBlogName = post.getBlogName();
-                    String accesstoken = nowPostBlogName.equals(blogNameDev)
-                            ? accessTokenDev
-                            : accessTokenLife;
+                    String accesstoken = nowPostBlogName.equals(tistoryConnect.getBlogNameDev())
+                            ? tistoryConnect.getAccessTokenDev()
+                            : tistoryConnect.getAccessTokenLife();
 
                     post.getPhotos().stream()
                             .filter(photo -> photo.getReplacer() == null)
@@ -146,11 +140,11 @@ public class TistoryServiceImpl implements TistoryService {
         }
 
         MultipartFile mFile = new CommonsMultipartFile(fileItem);
-        return tistoryClient.fileUpload(accessToken, output, blogName, mFile);
+        return tistoryClient.fileUpload(accessToken, tistoryConnect.getOutput(), blogName, mFile);
     }
 
     private void categorySaveH2DB(String accessToken, String blogName) {
-        tistoryClient.getCategory(accessToken, output, blogName).getTistory().getItem().getCategories()
+        tistoryClient.getCategory(accessToken, tistoryConnect.getOutput(), blogName).getTistory().getItem().getCategories()
                 .forEach(categoryInfo -> categoryRepository
                         .save(Category.builder()
                                 .blogName(blogName)
@@ -163,9 +157,9 @@ public class TistoryServiceImpl implements TistoryService {
 
         categoryRepository.findAll()
                 .forEach(category -> {
-                    String blogName = category.getBlogName().equals(blogNameDev)
-                            ? blogNameDev
-                            : blogNameLife;
+                    String blogName = category.getBlogName().equals(tistoryConnect.getBlogNameDev())
+                            ? tistoryConnect.getBlogNameDev()
+                            : tistoryConnect.getBlogNameLife();
 
                     blogCategory.put(category.getCategoryName(), CategoryVo.of(blogName, category.getCategoryId()));
                 });
