@@ -20,6 +20,7 @@ public interface TistoryService {
     void postUpload();
 
     /**
+     * TODO : 첨부 파일 업로드 프로세스 수정 필요 -> impl 확인
      * tistory로 첨부파일 upload
      * - 첨부파일 업로드 후 반환 정보인 replacer를 가지고 
      *  `post table`의 `html content`에 keyword와 치환 

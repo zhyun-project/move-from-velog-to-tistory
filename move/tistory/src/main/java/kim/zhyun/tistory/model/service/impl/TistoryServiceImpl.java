@@ -63,6 +63,14 @@ public class TistoryServiceImpl implements TistoryService {
         return getCategoryMap();
     }
 
+    /**
+     * TODO: 첨부 파일 업로드 프로세스 수정 필요
+     * 첨부 파일 수량이 앞으로 늘어나지 않고,
+     * 지금 가지고 있는 파일만 올리는거라서 한번에 전체(1190개) 업로드하게끔 작업했는데
+     * 소량 업로드 되도록 수정 필요
+     * - 90일동안 500개의 첨부파일이 올라가면 티스토리에 사유서를 제출해야 하는것 같았다. 일단 업로드 제한에 걸림..
+     * - https://diary.zhyun.kim/15
+     */
     @Override
     public void fileUpload() {
         postRepository.findAll().stream()
