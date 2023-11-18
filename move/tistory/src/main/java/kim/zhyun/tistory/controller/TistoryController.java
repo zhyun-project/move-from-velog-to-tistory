@@ -17,23 +17,35 @@ public class TistoryController {
 
     private final TistoryService tistoryService;
 
+    /**
+     * `tistory`에서 blog 정보 조회
+     */
     @GetMapping("/blog-info")
     public Response<BlogInfoFromTistory> blogInfo() {
 
         return tistoryService.blogInfo();
     }
 
+    /**
+     * `tistory`에서 category 정보 조회 후 h2 db 저장
+     */
     @GetMapping("/category")
     public Map<String, CategoryVo> category() {
 
         return tistoryService.getCategory();
     }
 
+    /**
+     * `tistory`에 file upload 후 반환되는 replacer h2 db 저장
+     */
     @GetMapping("/file-upload")
     public void fileUpload() {
         tistoryService.fileUpload();
     }
 
+    /**
+     * `tistory`에 post upload
+     */
     @GetMapping("/post-upload")
     public void postUpload() {
         tistoryService.postUpload();
