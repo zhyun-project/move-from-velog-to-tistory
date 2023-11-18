@@ -1,6 +1,9 @@
-package kim.zhyun.tistory.vo.response;
+package kim.zhyun.tistory.data.vo.response;
 
+import kim.zhyun.tistory.model.entity.Photo;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -8,6 +11,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostsFromVelog {
+
+    private long seq;
 
     private String title;
     private String body;
@@ -18,5 +23,6 @@ public class PostsFromVelog {
     private String series;
 
     private String releasedAt;
+    private List<Photo> photos;
 
 }

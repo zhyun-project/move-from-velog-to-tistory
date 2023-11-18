@@ -1,18 +1,15 @@
 package kim.zhyun.tistory.controller;
 
-import kim.zhyun.tistory.service.TistoryService;
-import kim.zhyun.tistory.vo.CategoryVo;
-import kim.zhyun.tistory.vo.Response;
-import kim.zhyun.tistory.vo.response.BlogInfoFromTistory;
-import kim.zhyun.tistory.vo.response.CategoryFromTistory;
-import kim.zhyun.tistory.vo.response.PhotoFromTistory;
-import kim.zhyun.tistory.vo.response.PostFromTistory;
+import kim.zhyun.tistory.data.vo.CategoryVo;
+import kim.zhyun.tistory.data.vo.Response;
+import kim.zhyun.tistory.data.vo.response.BlogInfoFromTistory;
+import kim.zhyun.tistory.data.vo.response.PostFromTistory;
+import kim.zhyun.tistory.model.service.TistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
-import java.util.Set;
 
 @RequiredArgsConstructor
 @RestController

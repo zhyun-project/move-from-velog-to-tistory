@@ -1,7 +1,7 @@
 package kim.zhyun.tistory.client;
 
-import kim.zhyun.tistory.vo.response.PhotosFromVelog;
-import kim.zhyun.tistory.vo.response.PostsFromVelog;
+import kim.zhyun.tistory.data.vo.response.PhotosFromVelog;
+import kim.zhyun.tistory.data.vo.response.PostsFromVelog;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 

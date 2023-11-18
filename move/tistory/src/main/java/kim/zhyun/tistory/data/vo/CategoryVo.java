@@ -1,4 +1,4 @@
-package kim.zhyun.tistory.vo;
+package kim.zhyun.tistory.data.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

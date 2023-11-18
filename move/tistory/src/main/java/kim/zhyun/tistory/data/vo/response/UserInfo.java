@@ -1,4 +1,4 @@
-package kim.zhyun.tistory.vo.response;
+package kim.zhyun.tistory.data.vo.response;
 
 import lombok.Getter;
 import lombok.Setter;

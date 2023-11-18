@@ -1,4 +1,4 @@
-package kim.zhyun.tistory.vo.request;
+package kim.zhyun.tistory.data.vo.request;
 
 import lombok.*;
 
@@ -10,7 +10,7 @@ public class RequestPostWrite {
 
     private String access_token;
 
-    private String blogName = "wlgus-gim";      //  Blog Name (필수)
+    private String blogName;                    //  Blog Name (필수)
     private String title;                       //  글 제목 (필수)
     private String content;                     //  글 내용
     private int visibility;                     //  발행상태 (0: 비공개 - 기본값, 1: 보호, 3: 발행)

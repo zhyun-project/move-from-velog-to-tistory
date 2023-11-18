@@ -1,9 +1,18 @@
 ### refresh
 POST localhost:8080/actuator/refresh
 
+### Access token 발급  - 개발 일지
+GET https://www.tistory.com/oauth/access_token?client_id=
+
+### Access token 발급  - 인생 일지
+GET https://www.tistory.com/oauth/access_token?client_id=
+
 ### blog info
 GET localhost:8080/blog-info
 
-### Access token 발급 // code는 1시간마다 갱신된다고 ㅎ..ㅏ...ㅁ.......
-GET https://www.tistory.com/oauth/access_token?client_id=|입력 필요|&client_secret=|입력 필요|&redirect_uri=https://wlgus-gim.tistory.com/&code=|1시간마다 입력 필요|&grant_type=authorization_code
+### save all category from velog
+GET localhost:8080/category
+
+### save all posts from velog
+GET localhost:8080/post/save-from-velog
 

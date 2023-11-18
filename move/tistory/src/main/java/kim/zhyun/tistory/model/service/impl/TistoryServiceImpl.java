@@ -1,18 +1,17 @@
-package kim.zhyun.tistory.service.impl;
+package kim.zhyun.tistory.model.service.impl;
 
 import kim.zhyun.tistory.client.TistoryClient;
-import kim.zhyun.tistory.client.VelogLocalClient;
+import kim.zhyun.tistory.data.vo.CategoryVo;
+import kim.zhyun.tistory.data.vo.Response;
+import kim.zhyun.tistory.data.vo.request.RequestPostWrite;
+import kim.zhyun.tistory.data.vo.response.BlogInfoFromTistory;
+import kim.zhyun.tistory.data.vo.response.PhotoFromTistory;
+import kim.zhyun.tistory.data.vo.response.PostFromTistory;
 import kim.zhyun.tistory.model.entity.Category;
 import kim.zhyun.tistory.model.repository.CategoryRepository;
 import kim.zhyun.tistory.model.repository.PhotoRepository;
 import kim.zhyun.tistory.model.repository.PostRepository;
-import kim.zhyun.tistory.service.TistoryService;
-import kim.zhyun.tistory.vo.CategoryVo;
-import kim.zhyun.tistory.vo.Response;
-import kim.zhyun.tistory.vo.request.RequestPostWrite;
-import kim.zhyun.tistory.vo.response.BlogInfoFromTistory;
-import kim.zhyun.tistory.vo.response.PhotoFromTistory;
-import kim.zhyun.tistory.vo.response.PostFromTistory;
+import kim.zhyun.tistory.model.service.TistoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +28,6 @@ import java.util.Map;
 @Service
 public class TistoryServiceImpl implements TistoryService {
     private final TistoryClient tistoryClient;
-    private final VelogLocalClient velogClient;
 
     private final PostRepository postRepository;
     private final PhotoRepository photoRepository;
@@ -65,13 +63,19 @@ public class TistoryServiceImpl implements TistoryService {
     public Response<PhotoFromTistory> fileUpload() {
         // TODO: 기능 구현 해야 됨 > 파일 업로드 후 H2 저장
 
-        return clientMappedFile("pathname");
+        return null;
     }
 
     public Response<PostFromTistory> postUpload() {
-        // TODO: 기능 구현 해야 됨 
+
+        String replacer;
+
+        // series
+
+        // TODO: 기능 구현 해야 됨
         RequestPostWrite requestPostWrite = RequestPostWrite.builder()
-                .access_token(accessToken)
+                .access_token("")
+                .blogName("")
                 .title("")
                 .content("")
                 .category("")
@@ -88,8 +92,10 @@ public class TistoryServiceImpl implements TistoryService {
 
     private Response<PostFromTistory> clientMappedPostDto(RequestPostWrite requestPostWrite) {
 
-        return tistoryClient.postUpload(accessToken,
-                blogName,
+        return tistoryClient.postUpload(
+                requestPostWrite.getAccess_token(),
+                requestPostWrite.getBlogName(),
+
                 requestPostWrite.getTitle(),
                 requestPostWrite.getContent(),
                 requestPostWrite.getVisibility(), // 비공개 : 0, 공개 : 3
@@ -100,7 +106,9 @@ public class TistoryServiceImpl implements TistoryService {
                 1);
     }
 
-    private Response<PhotoFromTistory> clientMappedFile(String pathname) {
+    private Response<PhotoFromTistory> clientMappedFile(String accessToken,
+                                                        String blogName,
+                                                        String pathname) {
 
         return tistoryClient.fileUpload("multipart/form-data",
                 accessToken, blogName,
