@@ -10,14 +10,14 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     /**
      * WHERE `uploadYn` = false  AND  `replacerContent` IS NULL
-     * LIMIT 15
+     * LIMIT 13
      */
-    List<Post> findTop15ByUploadYnIsFalseAndReplacerContentIsNull(Sort sort);
+    List<Post> findTop13ByUploadYnIsFalseAndReplacerContentIsNull(Sort sort);
 
     /**
      * WHERE `uploadYn` = false  AND  `replacerContent` IS NOT NULL
-     * LIMIT 15
+     * LIMIT 13
      */
-    List<Post> findTop15ByUploadYnIsFalseAndReplacerContentIsNotNull(Sort sort);
+    List<Post> findTop13ByUploadYnIsFalseAndReplacerContentIsNotNull(Sort sort);
 
 }

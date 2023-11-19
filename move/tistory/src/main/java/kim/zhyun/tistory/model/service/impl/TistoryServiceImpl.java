@@ -61,12 +61,12 @@ public class TistoryServiceImpl implements TistoryService {
 
     @Override
     public void postUpload() {
-        // 업로드 할 게시글 15개 중 사진 있는 경우 사진만 먼저 티스토리 업로드후 게시글에 반영
+        // 업로드 할 게시글 13개 중 사진 있는 경우 사진만 먼저 티스토리 업로드후 게시글에 반영
         transDataService.transformContentImgKeywordToReplacer();
 
         AtomicInteger cnt = new AtomicInteger();
         postRepository
-                .findTop15ByUploadYnIsFalseAndReplacerContentIsNotNull(Sort.by(asc("published")))
+                .findTop13ByUploadYnIsFalseAndReplacerContentIsNotNull(Sort.by(asc("published")))
                 .forEach(post -> {
                     String accessToken = post.getBlogName().equals(tistoryConnect.getBlogNameDev())
                             ? tistoryConnect.getAccessTokenDev()

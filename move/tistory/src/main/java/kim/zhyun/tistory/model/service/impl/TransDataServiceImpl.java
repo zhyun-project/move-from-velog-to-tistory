@@ -45,7 +45,7 @@ public class TransDataServiceImpl implements TransDataService {
         String suffix = "\" alt=\"\" style=\"max-width: 100%;\">";
 
         postRepository
-                .findTop15ByUploadYnIsFalseAndReplacerContentIsNull(Sort.by(asc("published")))
+                .findTop13ByUploadYnIsFalseAndReplacerContentIsNull(Sort.by(asc("published")))
                 .forEach(post -> {
                     String htmlContent = post.getHtmlContent();
                     String accessToken = post.getBlogName().equals(tistoryConnect.getBlogNameDev())
