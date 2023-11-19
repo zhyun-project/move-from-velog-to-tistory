@@ -16,3 +16,5 @@ GET localhost:8080/category
 ### save all posts from velog
 GET localhost:8080/post/save-from-velog
 
+### post upload (maximum 15)
+GET localhost:8080/post-upload

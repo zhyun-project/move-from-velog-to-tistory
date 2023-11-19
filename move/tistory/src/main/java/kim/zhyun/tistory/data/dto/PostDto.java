@@ -30,8 +30,11 @@ public class PostDto {
                 .blogName(post.getBlogName())
                 .title(post.getTitle())
                 .content(post.getReplacerContent())
-                .category(post.getCategoryName())
+                .visibility(post.getVisibility())
+                .category(post.getCategoryId())
+                .published(post.getPublished())
                 .slogan(post.getSlogan())
-                .tag(post.getTag()).build();
+                .tag(post.getTag())
+                .acceptComment(1).build();
     }
 }

@@ -18,7 +18,7 @@ public class RequestPostWrite {
     private String published;                   //  발행시간 (TIMESTAMP 이며 미래의 시간을 넣을 경우 예약. 기본값: 현재시간)
     private String slogan;                      //  문자 주소 urlSlug
     private String tag;                         //  태그 (',' 로 구분)
-    private int acceptComment1;                   //  댓글 허용 (0, 1 - 기본값)
+    private int acceptComment;                   //  댓글 허용 (0, 1 - 기본값)
 //    private String password;                    //  보호글 비밀번호
 
 }

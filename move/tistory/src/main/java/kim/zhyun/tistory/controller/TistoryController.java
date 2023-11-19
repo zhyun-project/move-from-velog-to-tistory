@@ -35,14 +35,6 @@ public class TistoryController {
     }
 
     /**
-     * `tistory`에 file upload 후 반환되는 replacer h2 db 저장
-     */
-    @GetMapping("/file-upload")
-    public void fileUpload() {
-        tistoryService.fileUpload();
-    }
-
-    /**
      * `tistory`에 post upload
      */
     @GetMapping("/post-upload")
