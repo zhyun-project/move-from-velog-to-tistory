@@ -15,7 +15,7 @@ public interface TistoryService {
 
     /**
      * tistory로 post upload
-     * - replacer content 값이 있고, 업로드 하지 않았던 게시글 최대 15개 업로드
+     * - replacer content 값이 있고, 업로드 하지 않았던 게시글 최대 ${tistory.postUploadCnt}개 업로드
      */
     void postUpload();
 

@@ -16,7 +16,9 @@ import kim.zhyun.tistory.model.service.TistoryService;
 import kim.zhyun.tistory.model.service.TransDataService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +44,9 @@ public class TistoryServiceImpl implements TistoryService {
 
     private final TistoryConnectVo tistoryConnect;
 
+    @Value("${tistory.postUploadCnt}") private int postUploadCnt;
+
+
     @Override
     public Response<BlogInfoFromTistory> blogInfo() {
 
@@ -61,12 +66,13 @@ public class TistoryServiceImpl implements TistoryService {
 
     @Override
     public void postUpload() {
-        // 업로드 할 게시글 13개 중 사진 있는 경우 사진만 먼저 티스토리 업로드후 게시글에 반영
+        // 업로드 할 게시글 ${tistory.postUploadCnt}개 중 사진 있는 경우 사진만 먼저 티스토리 업로드후 게시글에 반영
         transDataService.transformContentImgKeywordToReplacer();
 
         AtomicInteger cnt = new AtomicInteger();
         postRepository
-                .findTop13ByUploadYnIsFalseAndReplacerContentIsNotNull(Sort.by(asc("published")))
+                .findAllByUploadYnIsFalseAndReplacerContentIsNotNull(
+                        PageRequest.of(0, postUploadCnt, Sort.by(asc("published"))))
                 .forEach(post -> {
                     String accessToken = post.getBlogName().equals(tistoryConnect.getBlogNameDev())
                             ? tistoryConnect.getAccessTokenDev()

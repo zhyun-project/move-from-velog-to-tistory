@@ -14,6 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +31,7 @@ import java.util.Set;
 import static org.springframework.data.domain.Sort.Order.asc;
 
 @Slf4j
+@RefreshScope
 @RequiredArgsConstructor
 @Transactional(noRollbackFor = { FeignException.class })
 @Service
@@ -39,13 +43,17 @@ public class TransDataServiceImpl implements TransDataService {
 
     private final TistoryConnectVo tistoryConnect;
 
+    @Value("${tistory.postUploadCnt}") private int postUploadCnt;
+
+
     @Override
     public void transformContentImgKeywordToReplacer() {
         String prefix = "<img src=\"";
         String suffix = "\" alt=\"\" style=\"max-width: 100%;\">";
 
         postRepository
-                .findTop13ByUploadYnIsFalseAndReplacerContentIsNull(Sort.by(asc("published")))
+                .findAllByUploadYnIsFalseAndReplacerContentIsNull(
+                        PageRequest.of(0, postUploadCnt, Sort.by(asc("published"))))
                 .forEach(post -> {
                     String htmlContent = post.getHtmlContent();
                     String accessToken = post.getBlogName().equals(tistoryConnect.getBlogNameDev())
