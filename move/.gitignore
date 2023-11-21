@@ -3,9 +3,9 @@
 **/tistory.http
 
 
-imgs/**
+**/imgs/**
 
-_h2/**
+**/_h2/**
 
 .gradle
 build/
