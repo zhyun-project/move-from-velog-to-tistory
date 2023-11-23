@@ -1,5 +1,7 @@
 
+config/src/main/resources/bootstrap.yml
 
+**/config.http
 **/tistory.http
 
 
