@@ -3,7 +3,9 @@ package kim.zhyun.tistory.model.service;
 import kim.zhyun.tistory.data.vo.CategoryVo;
 import kim.zhyun.tistory.data.vo.Response;
 import kim.zhyun.tistory.data.vo.response.BlogInfoFromTistory;
+import kim.zhyun.tistory.model.entity.Post;
 
+import java.util.List;
 import java.util.Map;
 
 public interface TistoryService {
@@ -26,4 +28,8 @@ public interface TistoryService {
      */
     Map<String, CategoryVo> getCategory();
 
+    /**
+     * tistory db에서 post 데이터 전체 조회
+     */
+    List<Post> findAllPosts();
 }

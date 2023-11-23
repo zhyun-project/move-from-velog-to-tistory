@@ -10,6 +10,7 @@ import kim.zhyun.tistory.data.vo.request.RequestPostWrite;
 import kim.zhyun.tistory.data.vo.response.BlogInfoFromTistory;
 import kim.zhyun.tistory.data.vo.response.PostFromTistory;
 import kim.zhyun.tistory.model.entity.Category;
+import kim.zhyun.tistory.model.entity.Post;
 import kim.zhyun.tistory.model.repository.CategoryRepository;
 import kim.zhyun.tistory.model.repository.PostRepository;
 import kim.zhyun.tistory.model.service.TistoryService;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -88,6 +90,10 @@ public class TistoryServiceImpl implements TistoryService {
         log.info("{}개의 Post가 업로드 되었습니다.", cnt);
     }
 
+    @Override
+    public List<Post> findAllPosts() {
+        return postRepository.findAll();
+    }
 
 
     private Response<PostFromTistory> clientMappedPostDto(RequestPostWrite requestPostWrite) {

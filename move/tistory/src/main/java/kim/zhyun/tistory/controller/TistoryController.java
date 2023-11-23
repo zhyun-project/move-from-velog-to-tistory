@@ -3,12 +3,14 @@ package kim.zhyun.tistory.controller;
 import kim.zhyun.tistory.data.vo.CategoryVo;
 import kim.zhyun.tistory.data.vo.Response;
 import kim.zhyun.tistory.data.vo.response.BlogInfoFromTistory;
+import kim.zhyun.tistory.model.entity.Post;
 import kim.zhyun.tistory.model.service.TistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -43,6 +45,14 @@ public class TistoryController {
     @GetMapping("/post-upload")
     public void postUpload() {
         tistoryService.postUpload();
+    }
+
+    /**
+     * tistory db에서 post 조회 
+     */
+    @GetMapping("/get-posts")
+    public List<Post> findAllPosts() {
+        return tistoryService.findAllPosts();
     }
 
 }
