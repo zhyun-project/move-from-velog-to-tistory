@@ -1,5 +1,7 @@
 server:
   port: 8080
+  tomcat:
+    connection-timeout: ${my.tomcat.connectTimeout}
 
 spring:
 
@@ -14,6 +16,13 @@ spring:
 
     hibernate:
       ddl-auto: none
+
+feign:
+  client:
+    config:
+      tistoryClient:
+        connectTimeout: ${my.feign.connectTimeout}
+        readTimeout: ${my.feign.readTimeout}
 
 logging:
   level:
